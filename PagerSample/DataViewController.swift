@@ -29,7 +29,7 @@ class DataViewController: UIViewController {
         if let obj: AnyObject = dataObject {
             self.dataLabel!.text = obj.description
         } else {
-            self.dataLabel!.text = ""
+            self.dataLabel!.text = "nil"
         }
     }
 

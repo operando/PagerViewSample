@@ -27,7 +27,8 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
         super.init()
         // Create the data model.
         let dateFormatter = NSDateFormatter()
-        pageData = dateFormatter.monthSymbols
+//        pageData = dateFormatter.monthSymbols
+        pageData = [ "Page1", "Page2" ,]
     }
 
     func viewControllerAtIndex(index: Int, storyboard: UIStoryboard) -> DataViewController? {
@@ -35,7 +36,6 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
         if (self.pageData.count == 0) || (index >= self.pageData.count) {
             return nil
         }
-
         // Create a new view controller and pass suitable data.
         let dataViewController = storyboard.instantiateViewControllerWithIdentifier("DataViewController") as! DataViewController
         dataViewController.dataObject = self.pageData[index]
@@ -56,11 +56,16 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
 
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         var index = self.indexOfViewController(viewController as! DataViewController)
-        if (index == 0) || (index == NSNotFound) {
+        if index == NSNotFound {
             return nil
         }
-        
-        index--
+        if index == 0 {
+           index = self.pageData.count - 1
+        } else {
+           index--
+        }
+        println("Before")
+        println(index)
         return self.viewControllerAtIndex(index, storyboard: viewController.storyboard!)
     }
 
@@ -69,11 +74,12 @@ class ModelController: NSObject, UIPageViewControllerDataSource {
         if index == NSNotFound {
             return nil
         }
-        
         index++
         if index == self.pageData.count {
-            return nil
+            index = 0
         }
+        println("After")
+        println(index)
         return self.viewControllerAtIndex(index, storyboard: viewController.storyboard!)
     }
 
